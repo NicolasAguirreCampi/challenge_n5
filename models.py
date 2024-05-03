@@ -20,6 +20,7 @@ class Vehicle(db.Model):
     brand = db.Column(db.String(50), nullable=False)
     color = db.Column(db.String(50), nullable=False)
     owner_id = db.Column(db.Integer, db.ForeignKey('person.id'), nullable=False)
+    infractions = db.relationship('Infraction', backref='vehicle_license_plate')
 
 class Officer(db.Model):
     id = db.Column(db.Integer, primary_key=True)

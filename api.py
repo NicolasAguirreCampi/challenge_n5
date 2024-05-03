@@ -1,7 +1,7 @@
 from flask import request, Blueprint, jsonify
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 from database import db
-from models import Officer, Vehicle, Infraction
+from models import Officer, Vehicle, Infraction, Person
 from sqlalchemy.exc import SQLAlchemyError
 from datetime import datetime
 
@@ -57,8 +57,23 @@ def cargar_infraccion():
     except Exception as e:
         return jsonify({'error': 'Internal Server Error', 'message': str(e)}), 500
 
-@api_bp.route('/hola_world', methods=['GET'])
-@jwt_required()
-def hello_world():
-    current_user = get_jwt_identity()
-    return jsonify(logged_in_as=current_user), 200
+@api_bp.route('/generar_informe', methods=['GET'])
+def generar_informe():
+    email = request.args.get('email')
+    if not email:
+        return jsonify({'error': 'El correo electrónico es requerido'}), 400
+
+    person = Person.query.filter_by(email=email).first()
+    if not person:
+        return jsonify({'error': 'No se encontró ninguna persona con ese correo electrónico'}), 404
+
+    infractions = []
+    for vehicle in person.vehicles:
+        for infraction in vehicle.infractions:
+            infractions.append({
+                'license_plate': vehicle.license_plate,
+                'timestamp': infraction.timestamp.strftime('%Y-%m-%d %H:%M:%S'),
+                'comments': infraction.comments
+            })
+
+    return jsonify(infractions)
