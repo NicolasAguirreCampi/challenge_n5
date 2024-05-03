@@ -1,0 +1,131 @@
+{
+	"info": {
+		"_postman_id": "3d8ad2bc-dd23-456d-abdc-2a46432ee8f1",
+		"name": "n5challenge collection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "4264953"
+	},
+	"item": [
+		{
+			"name": "api",
+			"item": [
+				{
+					"name": "login",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"content-type": true
+						}
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"uuid": "587b0702-c790-4910-97da-297febf0191b"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\":\"Ryan\",\n    \"password\":\"ryan_password\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://127.0.0.1:5000/api/login"
+					},
+					"response": []
+				},
+				{
+					"name": "nueva infraccion",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"content-type": true
+						}
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcxNDc2NzQ5OCwianRpIjoiM2Y3NGQ3MjctOTNkOS00N2EzLWE0NTgtMjJlNjQ0MDBmZTk4IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6IlJ5YW4iLCJuYmYiOjE3MTQ3Njc0OTgsImNzcmYiOiJmNmNlNGQ0OC05MmRhLTRhNWYtOThmZS1mZTdiNzQxZTY2YmIiLCJleHAiOjE3MTQ3NjgzOTh9.3ja8g4Maf80oAnwu0BQaB3EOqqdA24GfR-nPCCvNKn0",
+								"uuid": "aedf4e79-d8f0-40d5-ad1e-694ecc8d9e5d"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"uuid": "1e2b7a48-8799-4be6-a0f2-2585fc608459"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"placa_patente\":\"ABC123\",\n    \"timestamp\": \"2024-05-02T19:52:43\",\n    \"comentarios\": \"Estacionado en zona prohibida\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:5000/api/cargar_infraccion",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"cargar_infraccion"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "generar informe",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:5000/api/generar_informe?email=john.doe@example.com",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"generar_informe"
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "john.doe@example.com"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
