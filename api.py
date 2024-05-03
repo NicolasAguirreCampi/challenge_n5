@@ -5,9 +5,9 @@ from models import Officer, Vehicle, Infraction
 from sqlalchemy.exc import SQLAlchemyError
 from datetime import datetime
 
-bp = Blueprint('api', __name__)
+api_bp = Blueprint('api', __name__, url_prefix='/api')
 
-@bp.route('/login', methods=['POST'])
+@api_bp.route('/login', methods=['POST'])
 def login():
     name = request.json.get('name', None)
     password = request.json.get('password', None)
@@ -18,7 +18,7 @@ def login():
     
     return jsonify({"msg": "Bad name or password"}), 401
 
-@bp.route('/cargar_infraccion', methods=['POST'])
+@api_bp.route('/cargar_infraccion', methods=['POST'])
 @jwt_required()
 def cargar_infraccion():
     try:
@@ -57,7 +57,7 @@ def cargar_infraccion():
     except Exception as e:
         return jsonify({'error': 'Internal Server Error', 'message': str(e)}), 500
 
-@bp.route('/hola_world', methods=['GET'])
+@api_bp.route('/hola_world', methods=['GET'])
 @jwt_required()
 def hello_world():
     current_user = get_jwt_identity()

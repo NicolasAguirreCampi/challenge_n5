@@ -7,6 +7,13 @@ class Person(db.Model):
     email = db.Column(db.String(100), unique=True, nullable=False)
     vehicles = db.relationship('Vehicle', backref='owner')
 
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'email': self.email
+        }
+
 class Vehicle(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     license_plate = db.Column(db.String(20), unique=True, nullable=False)

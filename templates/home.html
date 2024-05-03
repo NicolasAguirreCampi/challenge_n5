@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Admin</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    </head>
+    <body>
+        <h1>Admin home page</h1>
+        <nav>
+            <ul>
+                <li><a href="{{ url_for('admin.get_people') }}">Gestion de Personas</a></li>
+                <li><a href="{{ url_for('admin.get_vehicles') }}">Gestion de Vehículos</a></li>
+                <li><a href="{{ url_for('admin.get_officers') }}">Gestion de Oficiales</a></li>
+            </ul>
+        </nav>
+    </body>
+</html>

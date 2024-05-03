@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Listado de Personas</title>
+    </head>
+    <body>
+        <h1>Listado de Personas</h1>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+            <p>{{ message }}</p>
+            {% endfor %}
+        {% endif %}
+        {% endwith %}
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Correo Electrónico</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for person in people %}
+                <tr>
+                    <td>{{ person.name }}</td>
+                    <td>{{ person.email }}</td>
+                    <td>
+                        <form action="{{ url_for('admin.delete_person', id=person.id) }}" method="post">
+                            <button type="submit" onclick="return confirm('¿Está seguro de querer eliminar esta persona?');">Eliminar</button>
+                        </form>
+
+                        <form action="{{ url_for('admin.edit_person', id=person.id) }}">
+                            <button type="submit">Editar</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        </br>
+
+        <a href="{{ url_for('admin.create_person') }}">Crear persona</a>
+    </body>
+</html>

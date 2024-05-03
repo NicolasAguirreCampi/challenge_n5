@@ -4,7 +4,8 @@ from flask_jwt_extended import JWTManager
 from config import Config
 from database import db
 from models import Person, Vehicle, Officer, Infraction
-from api import bp
+from api import api_bp
+from admin import admin_bp
 
 # db seeds para testing
 def seed_database():
@@ -41,7 +42,8 @@ def create_app():
     app = Flask(__name__)
     app.config.from_object(Config)
     # JWT config
-    app.config['JWT_SECRET_KEY'] = 'clave_secreta'
+    app.config['JWT_SECRET_KEY'] = 'clave_json_web_token'
+    app.secret_key = "clave" # Configuracion necesaria para la sesion de web (para uso de mensajes flash)
     jwt = JWTManager(app)
     db.init_app(app)
 
@@ -50,7 +52,8 @@ def create_app():
         # Descomentar para seed (limpia la db y carga datos de prueba)
         seed_database()
 
-    app.register_blueprint(bp)
+    app.register_blueprint(api_bp)
+    app.register_blueprint(admin_bp)
 
     return app
 
