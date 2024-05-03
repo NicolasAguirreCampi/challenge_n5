@@ -2,10 +2,10 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8">
-        <title>Listado de Personas</title>
+        <title>Listado de Oficiales</title>
     </head>
     <body>
-        <h1>Listado de Personas</h1>
+        <h1>Listado de Oficiales</h1>
 
         {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
@@ -19,21 +19,21 @@
             <thead>
                 <tr>
                     <th>Nombre</th>
-                    <th>Correo Electrónico</th>
+                    <th>Numero de placa</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
             <tbody>
-                {% for person in people %}
+                {% for officer in officers %}
                 <tr>
-                    <td>{{ person.name }}</td>
-                    <td>{{ person.email }}</td>
+                    <td>{{ officer.name }}</td>
+                    <td>{{ officer.unique_id }}</td>
                     <td>
-                        <form action="{{ url_for('admin.delete_person', id=person.id) }}" method="post">
-                            <button type="submit" onclick="return confirm('¿Está seguro de querer eliminar esta persona?');">Eliminar</button>
+                        <form action="{{ url_for('admin.delete_officer', id=officer.id) }}" method="post">
+                            <button type="submit" onclick="return confirm('¿Está seguro de querer eliminar este oficial?');">Eliminar</button>
                         </form>
 
-                        <form action="{{ url_for('admin.edit_person', id=person.id) }}">
+                        <form action="{{ url_for('admin.edit_officer', id=officer.id) }}">
                             <button type="submit">Editar</button>
                         </form>
                     </td>
@@ -44,7 +44,7 @@
 
         </br>
 
-        <a href="{{ url_for('admin.create_person') }}">Crear persona</a>
+        <a href="{{ url_for('admin.create_officer') }}">Crear oficial</a>
         <a href="{{ url_for('admin.admin') }}">Volver</a>
     </body>
 </html>

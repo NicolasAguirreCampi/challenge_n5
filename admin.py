@@ -75,14 +75,16 @@ def create_vehicle():
             license_plate = request.form.get('license_plate')
             brand = request.form.get('brand')
             color = request.form.get('color')
-            if not license_plate or not color:
-                flash('El nombre y el correo electrónico son obligatorios.', 'error')
+            if not license_plate or not brand or not color:
+                flash('La patente, el color y la marca son obligatorios.', 'error')
+            elif Vehicle.query.filter_by(license_plate=license_plate).first():
+                flash('La patente ya existe.', 'error')
             else:
                 new_vehicle = Vehicle(license_plate=license_plate, color=color, brand=brand, owner_id=request.form.get('person_id'))
                 db.session.add(new_vehicle)
                 db.session.commit()
-                flash('vehiclea añadida con éxito.', 'success')
-                return redirect(url_for('admin.get_vehicle'))
+                flash('Vehiculo añadida con éxito.', 'success')
+                return redirect(url_for('admin.get_vehicles'))
         except Exception as e:
             flash(f'Error. {str(e)}', 'error')
         
@@ -131,8 +133,60 @@ def delete_vehicle(id):
 
     return redirect(url_for('admin.get_vehicles'))
 
-# # OFICIALES
-# @admin_bp.route('/officers', methods=['GET'])
-# def get_officers():
-#     officers = Officer.query.all()
-#     return jsonify([officer.to_dict() for officer in officers]), 200
+# OFICIALES
+@admin_bp.route('/officers', methods=['GET'])
+def get_officers():
+    officers = Officer.query.all()
+    return render_template('officers.html', officers=officers)
+
+@admin_bp.route('/officer/<int:id>', methods=['POST'])
+def delete_officer(id):
+    officer = Officer.query.get(id)
+    if not officer:
+        flash('El oficial no existe.', 'error')
+        return redirect(url_for('admin.get_officers'))
+
+    db.session.delete(officer)
+    db.session.commit()
+
+    return redirect(url_for('admin.get_officers'))
+
+@admin_bp.route('/add_officer ', methods=['GET', 'POST'])
+def create_officer():
+    if request.method == "POST":
+        try:
+            name = request.form.get('name')
+            unique_id = request.form.get('unique_id')
+            if not name or not unique_id:
+                flash('El nombre y la placa son obligatorios.', 'error')
+            elif Officer.query.filter_by(unique_id=unique_id).first():
+                flash('La placa ya existe.', 'error')
+            else:
+                new_officer = Officer(name=name, unique_id=unique_id)
+                new_officer.set_password(f"{unique_id}")
+                db.session.add(new_officer)
+                db.session.commit()
+                flash('Oficial añadido con éxito.', 'success')
+                return redirect(url_for('admin.get_officers'))
+        except Exception as e:
+            flash(f'Error. {str(e)}', 'error')
+        
+    return render_template('add_officer.html')
+
+@admin_bp.route('/edit_officer/<int:id>', methods=['GET', 'POST'])
+def edit_officer(id):
+    officer = Officer.query.get_or_404(id)
+    if request.method == 'POST':
+        if officer.unique_id != request.form['unique_id']: # Si se edita placa entonces, verificar que no exista el nuevo valor
+            other_officer = officer.query.filter_by(unique_id=request.form['unique_id']).first()
+            if other_officer:
+                flash('La placa nueva para el official ya existe.', 'error')
+                return render_template('edit_officer.html', officer=officer)
+            
+        officer.name = request.form['name']
+        officer.unique_id = request.form['unique_id']
+        db.session.commit()
+        flash('Información actualizada correctamente', 'success')
+        return redirect(url_for('admin.get_officers'))
+    
+    return render_template('edit_officer.html', officer=officer)
