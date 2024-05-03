@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Añadir Vehiculo</title>
+    </head>
+    <body>
+        <h1>Añadir Vehiculo</h1>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+            <p>{{ message }}</p>
+            {% endfor %}
+        {% endif %}
+        {% endwith %}
+        
+        <form method="POST">
+            <label for="license_plate">Patente:</label>
+            <input type="text" id="license_plate" name="license_plate" required><br><br>
+
+            <label for="brand">Marca:</label>
+            <input type="text" id="brand" name="brand" required><br><br>
+
+            <label for="color">Color:</label>
+            <input type="text" id="color" name="color" required><br><br>
+
+            <label for="person_id">Propietario:</label>
+            <select name="person_id" id="person_id" required>
+                {% for person in people %}
+                <option value="{{ person.id }}">
+                    {{ person.name }}
+                </option>
+                {% endfor %}
+            </select><br><br>
+
+            <button type="submit">Añadir Vehiculo</button>
+        </form>
+        <a href="{{ url_for('admin.get_people') }}">Volver al Listado</a>
+    </body>
+</html>

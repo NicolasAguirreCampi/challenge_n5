@@ -32,9 +32,9 @@ def seed_database():
     db.session.add_all([vehicle1, vehicle2])
 
     # Infraction
-    infraction1 = Infraction(license_plate=vehicle1.license_plate, timestamp=datetime.now(), comments="Speeding")
-    infraction2 = Infraction(license_plate=vehicle2.license_plate, timestamp=datetime.now(), comments="Parking violation")
-    db.session.add_all([infraction1, infraction2])
+    # infraction1 = Infraction(license_plate=vehicle1.license_plate, timestamp=datetime.now(), comments="Speeding")
+    # infraction2 = Infraction(license_plate=vehicle2.license_plate, timestamp=datetime.now(), comments="Parking violation")
+    # db.session.add_all([infraction1, infraction2])
 
     db.session.commit()
 
