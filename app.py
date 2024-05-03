@@ -48,7 +48,7 @@ def create_app():
     with app.app_context():
         db.create_all()
         # Descomentar para seed (limpia la db y carga datos de prueba)
-        # seed_database()
+        seed_database()
 
     app.register_blueprint(bp)
 
